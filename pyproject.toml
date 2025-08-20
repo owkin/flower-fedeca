@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fedeca_flower"
+version = "1.0.0"
+description = ""
+license = "Apache-2.0"
+dependencies = [
+    "flwr[simulation]==1.20.0",
+    "pandas>=2.2.3",
+    "torch>=2.7.0",
+    "lifelines==0.30.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.flwr.app]
+publisher = "flwrlabs"
+
+[tool.flwr.app.components]
+serverapp = "fedeca_flower.server_app:app"
+clientapp = "fedeca_flower.client_app:app"
+
+[tool.flwr.app.config]
+nr-iterations = 10 # steps in NewtonRapshon stage
+cox-comp-iterations = 10 # rounds for federated Cox
+path-to-data = "cox_data_n1000_p4.csv"
+bootstrap = false # if false, then naïve and robust FedECA are executed
+bootstrap-iterations = 20
+bootstrap-fn = "global" # {"per-client", "global"}
+
+[tool.flwr.federations]
+default = "local-simulation"
+
+[tool.flwr.federations.local-simulation]
+options.num-supernodes = 4
+
+[tool.flwr.federations.remote]
+address = "127.0.0.1:9093"
+insecure = true
