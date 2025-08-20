@@ -1,0 +1,34 @@
+services:
+  # create a SuperLink service
+  superlink:
+    image: flower-fedeca-base-with-deps:latest
+    ports:
+      - "9091:9091"
+      - "9092:9092"
+      - "9093:9093"
+    entrypoint: ["/bin/sh", "-c", "flower-superlink --insecure"]
+
+  # create a SuperNode services
+  supernode-1:
+    image: flower-fedeca-base-with-deps:latest
+    depends_on:
+      - superlink
+    entrypoint: ["/bin/sh", "-c", "flower-supernode --insecure --superlink='superlink:9092' --node-config='partition-id=0'"]
+  
+  supernode-2:
+    image: flower-fedeca-base-with-deps:latest
+    depends_on:
+      - superlink
+    entrypoint: ["/bin/sh", "-c", "flower-supernode --insecure --superlink='superlink:9092' --node-config='partition-id=1'"]
+
+  supernode-3:
+    image: flower-fedeca-base-with-deps:latest
+    depends_on:
+      - superlink
+    entrypoint: ["/bin/sh", "-c", "flower-supernode --insecure --superlink='superlink:9092' --node-config='partition-id=2'"]
+  
+  supernode-4:
+    image: flower-fedeca-base-with-deps:latest
+    depends_on:
+      - superlink
+    entrypoint: ["/bin/sh", "-c", "flower-supernode --insecure --superlink='superlink:9092' --node-config='partition-id=3'"]
