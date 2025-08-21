@@ -78,7 +78,7 @@ flwr run . --run-config="bootstrap=true bootstrap-iterations=200 bootstrap-fn='p
 ## Run in deployment
 
 > \[!TIP\]
-> For more insights on how to use Flower's Deployment Engine, including setting up TLS and authentication check the [documentation](https://flower.ai/docs/framework/deploy.html). You may refer also to the [how to run Flower with Docker](https://flower.ai/docs/framework/docker/index.html) guide.
+> For more insights on how to use Flower's Deployment Engine, including setting up TLS and authentication, check the [documentation](https://flower.ai/docs/framework/deploy.html). You may refer also to the [how to run Flower with Docker](https://flower.ai/docs/framework/docker/index.html) guide.
 
 You can spawn a Flower federation comprised of one `SuperLink` and four `SuperNodes` by running the `compose.yaml` file in this repository. You'll need to first build the image described in the `Dockerfile`. This will (1) install the dependencies in the `pyproject.toml` and (2) copy the content of the `data/` directory to the containers.
 
@@ -113,7 +113,7 @@ flwr run . remote --stream
 
 ## Bringing your own data
 
-This example brings toy COX data that is pre-partitioned into four centers (see the `data/` directory). Whether you run the FedECA app in Simulation or Deployment, the `ClientApps` load that data by following the data path _template_ defined in the `[tool.flwr.app.config]` section of the `pyproject.toml` as:
+The above demonstrations use the [toy example data](#toy-model) pre-partitioned into four centers. When the FedECA app runs, in simulation or deployment mode, the `ClientApp`s load the appropriate datasets by following the data path _template_ defined in the `[tool.flwr.app.config]` section of the `pyproject.toml` as:
 
 ```TOML
 [tool.flwr.app.config]
@@ -122,7 +122,10 @@ path-to-data = "data/center{}/data.csv"
 ```
 Then, at runtime, each `ClientApp` completes that path with their respective partition id. 
 
-If you wish to test FedECA with your own CSV data, follow these steps: (1) partition your CSV on a per-center basis into different files; (2) update the `path-to-data` config so it allows each `ClientApp` to load the corresponding file; (3) optionally, if you run with the Simulation Engine, ensure the `options.num-supernodes` in the `pyproject.toml` sets the appropriate number of supernodes (which should be equal to the number of data partitions). If you instead run with the Deployment Engine, ensure your `compose.yaml` file is spawning enough `SuperNodes`.
+To test FedECA with your own data (currently only `csv` files are supported):
+1. Partition your data on a per-center basis into different `csv` files.
+2. Update the `path-to-data` config so it allows each `ClientApp` to load the corresponding file.
+3. Optionally, if run with the Simulation Engine, make sure the `options.num-supernodes` in `pyproject.toml` sets the appropriate number of supernodes equal to the number of data partitions. If run with the Deployment Engine, make sure the `compose.yaml` file is spawning enough `SuperNodes`.
 
 
 ## Citing FedECA
