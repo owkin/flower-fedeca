@@ -226,7 +226,7 @@ def generate_global_seeds(grid: Grid, cox_data: str, seed: int):
     # Fetch size of local datasets
     replies = send_and_receive_all_nodes(
         grid,
-        RecordDict({"config": ConfigRecord({"cox-data-path": cox_data})}),
+        RecordDict({"config": ConfigRecord({"data-path": cox_data})}),
         stage="query.get_data_size",
     )
 
@@ -397,7 +397,7 @@ def train(
             "prop-model-params": params_record,
             "config": ConfigRecord(
                 {
-                    "cox-data-path": context.run_config["path-to-data"],
+                    "data-path": context.run_config["path-to-data"],
                 }
             ),
             "global-survival-stats": ConfigRecord(
@@ -468,7 +468,7 @@ def compute_risk_phi_stats_list(
             "prop-model-params": params_record,
             "config": ConfigRecord(
                 {
-                    "cox-data-path": context.run_config["path-to-data"],
+                    "data-path": context.run_config["path-to-data"],
                 }
             ),
             "global-survival-stats": ConfigRecord(
@@ -516,7 +516,7 @@ def compute_survival_statistics(
             "prop-model-params": params_record,
             "config": ConfigRecord(
                 {
-                    "cox-data-path": context.run_config["path-to-data"],
+                    "data-path": context.run_config["path-to-data"],
                 }
             ),
             "aggregated-moments": ConfigRecord({"bytes": pickle.dumps(aggr_moments)}),
@@ -556,7 +556,7 @@ def global_standardization(grid: Grid, context: Context, p_model: torch.nn.Modul
             "prop-model-params": params_record,
             "config": ConfigRecord(
                 {
-                    "cox-data-path": context.run_config["path-to-data"],
+                    "data-path": context.run_config["path-to-data"],
                 }
             ),
         },
@@ -666,7 +666,7 @@ def netwon_raphson_step(p_model: torch.nn.Module, data_csv: str, grid: Grid):
     record = RecordDict(
         {
             "model-params": params_record,
-            "config": ConfigRecord({"cox-data-path": data_csv}),
+            "config": ConfigRecord({"data-path": data_csv}),
         },
     )
     replies = send_and_receive_all_nodes(grid, record, stage="train.newton_rapshon")
@@ -707,7 +707,7 @@ def run_robust_cox_variance_stage(
             "prop-model-params": params_record,
             "config": ConfigRecord(
                 {
-                    "cox-data-path": path_to_data,
+                    "data-path": path_to_data,
                     "beta-bytes": pickle.dumps(beta),
                     "variance-matrix-bytes": pickle.dumps(variance_matrix),
                 }

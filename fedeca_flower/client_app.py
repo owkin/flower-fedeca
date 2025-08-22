@@ -95,7 +95,7 @@ def get_data(msg: Message, context: Context) -> Message:
 
     # Load data for this client
     partition_id = context.node_config["partition-id"]
-    data_path_template = msg.content["config"]["cox-data-path"]
+    data_path_template = msg.content["config"]["data-path"]
     data_path = data_path_template.format(partition_id)
     df_data = pd.read_csv(data_path)
     # Count rows
@@ -128,7 +128,7 @@ def train(msg: Message, context: Context) -> Message:
     set_seeds(seed)
 
     # Load data and maybe resample with replacement
-    data_path_template = msg.content["config"]["cox-data-path"]
+    data_path_template = msg.content["config"]["data-path"]
     df_client = load_data(context, data_path_template, seed)
 
     # Init local model
@@ -170,7 +170,7 @@ def setup_data_and_disco_trainer(msg: Message, context: Context):
     set_seeds(seed)
 
     # Load data and maybe resample with replacement
-    data_path_template = msg.content["config"]["cox-data-path"]
+    data_path_template = msg.content["config"]["data-path"]
     df_client = load_data(context, data_path_template, seed)
 
     cox_model = CoxPHModelTorch(ndim=1)

@@ -123,8 +123,11 @@ path-to-data = "data/center{}/data.csv"
 Then, at runtime, each `ClientApp` completes that path with their respective partition id. 
 
 To test FedECA with your own data (currently only `csv` files are supported):
-1. Partition your data on a per-center basis into different `csv` files.
-2. Update the `path-to-data` config so it allows each `ClientApp` to load the corresponding file.
+1. Partition your data on a per-center basis into different `csv` files. For examle, name them `partition1.csv`, `partition2.csv`, etc.
+2. In the `pyproject.toml`, set `path-to-data = "path/to/my/partition{}.csv"`. Alternatively, you can override this setting at runtime as:
+    ```shell
+       flwr run . --run-config="path-to-data='path/to/my/partition{}.csv'"
+    ```
 3. Optionally, if run with the Simulation Engine, make sure the `options.num-supernodes` in `pyproject.toml` sets the appropriate number of supernodes equal to the number of data partitions. If run with the Deployment Engine, make sure the `compose.yaml` file is spawning enough `SuperNodes`.
 
 
