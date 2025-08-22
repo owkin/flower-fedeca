@@ -78,7 +78,7 @@ flwr run . --run-config="bootstrap=true bootstrap-iterations=200 bootstrap-fn='p
 ## Run in deployment
 
 > \[!TIP\]
-> For more insights on how to use Flower's Deployment Engine, check the [documentation](https://flower.ai/docs/framework/how-to-run-flower-with-deployment-engine.html). You may refer also to the [how to run Flower with Docker](https://flower.ai/docs/framework/docker/index.html) guide.
+> For more insights on how to use Flower's Deployment Engine, including setting up TLS and authentication, check the [documentation](https://flower.ai/docs/framework/deploy.html). You may refer also to the [how to run Flower with Docker](https://flower.ai/docs/framework/docker/index.html) guide.
 
 You can spawn a Flower federation comprised of one `SuperLink` and four `SuperNodes` by running the `compose.yaml` file in this repository. You'll need to first build the image described in the `Dockerfile`. This will (1) install the dependencies in the `pyproject.toml` and (2) copy the content of the `data/` directory to the containers.
 
@@ -102,15 +102,7 @@ e628e5cd63f9   owkin-flower-fedeca-supernode-3-1   1.07%     48.14MiB / 31.29GiB
 204f2b4e4a0c   owkin-flower-fedeca-superlink-1     0.49%     48.5MiB / 31.29GiB    0.15%     30.6kB / 11.7kB   0B / 4.1kB   38
 ```
 
-With the infrastructure (i.e. `SuperLink` and `SuperNodes`) ready, you can submit a run. You can achieve so by pointing the `flwr run` command to another federation (in this case a real one created with the compose file). If you inspect the `pyproject.toml` you'll find this section at the bottom:
-
-```TOML
-[tool.flwr.federations.remote]
-address = "127.0.0.1:9093"
-insecure = true
-```
-
-Where `address` indicates the address of the `SuperLink`. Here for testing purposes we don't use TLS certificates (hence the `insecure = true`). In a new terminal, submit the run:
+With the infrastructure (i.e. `SuperLink` and `SuperNodes`) ready, you can submit a run. You can achieve so by pointing the `flwr run` command to another federation (in this case a real one created with the compose file). If you inspect the `pyproject.toml` you'll find the `remote` federation at the bottom. Run the Flower App in your deployed federation with:
 
 ```shell
 # "remote" is the name in the federation (you can change it)
@@ -118,6 +110,25 @@ Where `address` indicates the address of the `SuperLink`. Here for testing purpo
 # on the terminal you run `flwr run` from.
 flwr run . remote --stream
 ```
+
+## Bringing your own data
+
+The above demonstrations use the [toy example data](#toy-model) pre-partitioned into four centers. When the FedECA app runs, in simulation or deployment mode, the `ClientApp`s load the appropriate datasets by following the data path _template_ defined in the `[tool.flwr.app.config]` section of the `pyproject.toml` as:
+
+```TOML
+[tool.flwr.app.config]
+...
+path-to-data = "data/center{}/data.csv"
+```
+Then, at runtime, each `ClientApp` completes that path with their respective partition id. 
+
+To test FedECA with your own data (currently only `csv` files are supported):
+1. Partition your data on a per-center basis into different `csv` files. For examle, name them `partition1.csv`, `partition2.csv`, etc.
+2. In the `pyproject.toml`, set `path-to-data = "path/to/my/partition{}.csv"`. Alternatively, you can override this setting at runtime as:
+    ```shell
+       flwr run . --run-config="path-to-data='path/to/my/partition{}.csv'"
+    ```
+3. Optionally, if run with the Simulation Engine, make sure the `options.num-supernodes` in `pyproject.toml` sets the appropriate number of supernodes equal to the number of data partitions. If run with the Deployment Engine, make sure the `compose.yaml` file is spawning enough `SuperNodes`.
 
 
 ## Citing FedECA

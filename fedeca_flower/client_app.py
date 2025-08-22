@@ -16,20 +16,22 @@ from fedeca_flower.fedeca.newton_raphson import (
 from fedeca_flower.fedeca.robustcox import RobustCoxVarianceAlgo
 from fedeca_flower.fedeca.utils import set_seeds
 
-cox_data = {i: pd.read_csv(f"data/center{i}/data.csv") for i in range(4)}
-
 
 # Flower ClientApp
 app = ClientApp()
 
 
-def load_data(context: Context, seed: int = 42) -> pd.DataFrame:
+def load_data(
+    context: Context, data_path_template: str, seed: int = 42
+) -> pd.DataFrame:
     """
     Load data for the client, with optional bootstrapping.
 
     If bootstrapping is enabled, resample with replacement (per-client) or use indices provided by the server (global).
     Args:
         context (Context): The node context containing configuration and state.
+        data_path_template (str): Path template for the data files. For example: `"data/center{}/data.csv"`
+        which will be filled with the appropriate center ID in this function.
         seed (int): Random seed for reproducibility.
     Returns:
         pd.DataFrame: The client data, possibly resampled.
@@ -44,7 +46,8 @@ def load_data(context: Context, seed: int = 42) -> pd.DataFrame:
         else ""
     )
 
-    df_data = cox_data[partition_id]
+    data_path = data_path_template.format(partition_id)
+    df_data = pd.read_csv(data_path)
     if resample_fn == "per-client":
         rng = np.random.default_rng(seed)
         df_client = df_data.sample(n=df_data.shape[0], replace=True, random_state=rng)
@@ -92,7 +95,9 @@ def get_data(msg: Message, context: Context) -> Message:
 
     # Load data for this client
     partition_id = context.node_config["partition-id"]
-    df_data = cox_data[partition_id]
+    data_path_template = msg.content["config"]["data-path"]
+    data_path = data_path_template.format(partition_id)
+    df_data = pd.read_csv(data_path)
     # Count rows
     num_rows = df_data.shape[0]
     return Message(
@@ -123,7 +128,8 @@ def train(msg: Message, context: Context) -> Message:
     set_seeds(seed)
 
     # Load data and maybe resample with replacement
-    df_client = load_data(context, seed)
+    data_path_template = msg.content["config"]["data-path"]
+    df_client = load_data(context, data_path_template, seed)
 
     # Init local model
     model = LogisticRegressionTorch(ndim=10)
@@ -164,7 +170,8 @@ def setup_data_and_disco_trainer(msg: Message, context: Context):
     set_seeds(seed)
 
     # Load data and maybe resample with replacement
-    df_client = load_data(context, seed)
+    data_path_template = msg.content["config"]["data-path"]
+    df_client = load_data(context, data_path_template, seed)
 
     cox_model = CoxPHModelTorch(ndim=1)
 
