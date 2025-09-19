@@ -11,10 +11,10 @@ build-backend = "hatchling.build"
 name = "fedeca_flower"
 version = "1.0.0"
 description = ""
-license = "Apache-2.0"
+license = { file = "LICENSE.md" }
 # Dependencies for your Flower App
 dependencies = [
-    "flwr[simulation]==1.20.0",
+    "flwr[simulation]>=1.21.0",
     "pandas>=2.2.3",
     "torch>=2.7.0",
     "lifelines==0.30.0",
