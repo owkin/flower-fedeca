@@ -7,7 +7,7 @@ The original implementation in the [Substra framework](https://docs.substra.org/
 Please [cite our paper](#citing-fedeca) if you use our code!
 
 
-## Featch the `Flower-FedECA` app
+## Featch the app
 
 On a new environment with Python 3.10-3.12, install Flower:
 
