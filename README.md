@@ -43,7 +43,7 @@ From this directory, first install the dependencies:
 pip install -e .
 ```
 
-Before launching our simulation, we need to define a SuperLink Connection in the `Flower Configuration`. To do this, let's first locate the Flower Configuration file and then edit it.
+Before launching our simulation, we need to define a SuperLink Connection in the [`Flower Configuration`](https://flower.ai/docs/framework/ref-flower-configuration.html). This helps you define the size of your simulation (4 nodes in this case), among other settings. To do this, let's first locate the Flower Configuration file and then edit it.
 
 Locate the Flower Configuration file:
 
@@ -60,7 +60,7 @@ Edit the `local` configuration so it looks like the following. It defines `4` vi
 
 ```toml
 [superlink.local]
-options.num-supernodes = 4
+options.num-supernodes = 4 # <----------- 4 centers data for your simulation
 options.backend.client-resources.num-cpus = 1
 options.backend.client-resources.num-gpus = 0.0
 ```
