@@ -10,7 +10,7 @@ build-backend = "hatchling.build"
 [project]
 name = "fedeca"
 version = "1.0.0"
-description = "Flower App implementing FedECA, the worlds-first federated external control arms (ECAs) algorithm developed by Owkin."
+description = "Federated external control arm method (FedECA) for survival analysis, as a Flower App."
 license = { file = "LICENSE.md" }
 # Dependencies for your Flower App
 dependencies = [
