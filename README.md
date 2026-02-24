@@ -7,7 +7,7 @@ The original implementation in the [Substra framework](https://docs.substra.org/
 Please [cite our paper](#citing-fedeca) if you use our code!
 
 
-## Featch the app
+## Get the app
 
 On a new environment with Python 3.10-3.12, install Flower:
 
@@ -15,7 +15,7 @@ On a new environment with Python 3.10-3.12, install Flower:
 pip install flwr
 ```
 
-There are two was to fetch the app. By downloading it via `flwr new` and following its readme:
+There are two was to get the FedECA-Flower app. By downloading it via `flwr new` and following its readme:
 
 ```shell
 flwr new @owkin/fedeca
@@ -43,7 +43,7 @@ From this directory, first install the dependencies:
 pip install -e .
 ```
 
-Before launching our simulation, we need to define a SuperLink Connection in the [`Flower Configuration`](https://flower.ai/docs/framework/ref-flower-configuration.html). This helps you define the size of your simulation (4 nodes in this case), among other settings. To do this, let's first locate the Flower Configuration file and then edit it.
+Before launching the simulation, we need to define a SuperLink Connection in the [`Flower Configuration`](https://flower.ai/docs/framework/ref-flower-configuration.html). This helps you define the size of your simulation (4 nodes in this case), among other settings. To do this, let's first locate the Flower Configuration file and then edit it.
 
 Locate the Flower Configuration file:
 
@@ -154,7 +154,7 @@ SuperLink connections:
  local (default)
 ```
 
-Then, add a new connection at the end of the file named `remote`. For this example that runs locally the below configuration doesn't make use of TLS. Follow the documentation links presented earlier to configure TLS connections:
+Then, add a new connection at the end of the file named `remote`. For this example that runs locally the below configuration doesn't make use of TLS. Follow the documentation links presented earlier to configure TLS connections.
 
 ```toml
 [superlink.remote]
@@ -187,7 +187,7 @@ To test FedECA with your own data (currently only `csv` files are supported):
     ```shell
        flwr run . --run-config="path-to-data='path/to/my/partition{}.csv'"
     ```
-3. Optionally, if run with the Simulation Engine, make sure the `options.num-supernodes` your `Flower Configuration` sets the appropriate number of supernodes equal to the number of data partitions. Refer to the [Simulation Documentation](https://flower.ai/docs/framework/how-to-run-simulations.html) for more details. If run with the Deployment Engine, make sure the `compose.yaml` file is spawning enough `SuperNodes`.
+3. Optionally, if run with the Simulation Engine, make sure the `options.num-supernodes` in your `Flower Configuration` sets the appropriate number of supernodes equal to the number of data partitions. Refer to the [Simulation Documentation](https://flower.ai/docs/framework/how-to-run-simulations.html) for more details. If run with the Deployment Engine, make sure the `compose.yaml` file is spawning enough `SuperNodes`.
 
 
 ## Citing FedECA
