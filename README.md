@@ -43,7 +43,7 @@ From this directory, first install the dependencies:
 pip install -e .
 ```
 
-Before launching the simulation, we need to define a SuperLink Connection in the [`Flower Configuration`](https://flower.ai/docs/framework/ref-flower-configuration.html). This helps you define the size of your simulation (4 nodes in this case), among other settings. To do this, let's first locate the Flower Configuration file and then edit it.
+Before launching the simulation, we need to define a `local` `SuperLink` connection in the [`Flower Configuration`](https://flower.ai/docs/framework/ref-flower-configuration.html). This helps you define the size of your simulation (4 nodes in this case), among other settings. To do this, let's first locate the Flower Configuration file and then edit it.
 
 Locate the Flower Configuration file:
 
@@ -141,7 +141,7 @@ e628e5cd63f9   owkin-flower-fedeca-supernode-3-1   1.07%     48.14MiB / 31.29GiB
 204f2b4e4a0c   owkin-flower-fedeca-superlink-1     0.49%     48.5MiB / 31.29GiB    0.15%     30.6kB / 11.7kB   0B / 4.1kB   38
 ```
 
-With the infrastructure (i.e. `SuperLink` and `SuperNodes`) ready, you can submit a run. You can achieve so by pointing the `flwr run` command to another federation (in this case a real one created with the compose file). Before running the app, you need to define a `SuperLink` connection in your `Flower Configuration` file. Let's see how to do this:
+With the infrastructure (i.e. `SuperLink` and `SuperNodes`) ready, you can submit a run. You can achieve so by pointing the `flwr run` command to another federation (in this case a real one created with the compose file). Before running the app, you need to define a `remote` `SuperLink` connection in your `Flower Configuration` file, in the same way that a `local` `SuperLink` connection is defined in simulation mode:
 
 Locate the Flower Configuration file:
 
