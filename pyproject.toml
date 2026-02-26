@@ -8,13 +8,13 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "fedeca_flower"
+name = "fedeca"
 version = "1.0.0"
-description = ""
+description = "Federated external control arm method (FedECA) for survival analysis, as a Flower App."
 license = { file = "LICENSE.md" }
 # Dependencies for your Flower App
 dependencies = [
-    "flwr[simulation]==1.21.0",
+    "flwr[simulation]==1.26.1",
     "pandas>=2.2.3",
     "torch>=2.7.0",
     "lifelines==0.30.0",
@@ -40,16 +40,3 @@ path-to-data = "data/center{}/data.csv"
 bootstrap = false # if false, then naïve and robust FedECA are executed
 bootstrap-iterations = 20
 bootstrap-fn = "global" # {"per-client", "global"}
-
-[tool.flwr.federations]
-default = "local-simulation"
-
-# Local simulation federation with 4 virtual SuperNodes
-[tool.flwr.federations.local-simulation]
-options.num-supernodes = 4
-
-# Remote federation example for use with SuperLink
-[tool.flwr.federations.remote]
-address = "127.0.0.1:9093" # SuperLink Exec API address
-insecure = true  # Remove this line to enable TLS
-# root-certificates = "<PATH/TO/ca.crt>"  # For TLS setup
