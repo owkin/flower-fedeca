@@ -11,7 +11,7 @@ build-backend = "hatchling.build"
 name = "fedeca"
 version = "1.0.0"
 description = "Federated external control arm method (FedECA) for survival analysis, as a Flower App."
-license = { file = "LICENSE.md" }
+license = { file = "LICENSE" }
 # Dependencies for your Flower App
 dependencies = [
     "flwr[simulation]==1.26.1",
@@ -24,7 +24,7 @@ dependencies = [
 packages = ["."]
 
 [tool.flwr.app]
-publisher = "flwrlabs"
+publisher = "owkin"
 
 # Point to your ServerApp and ClientApp objects
 # Format: "<module>:<object>"
